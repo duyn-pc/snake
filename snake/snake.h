@@ -16,10 +16,10 @@ public:
 		  int snakeCoord);
 
 	// Return various attributes of the snake object
-	bool isAlive();
-	bool foodActive();
-	bool giveDirection();
-	int giveScore();
+	bool is_alive();
+	bool food_active();
+	bool set_direction();
+	int set_score();
 
 	//Change snake direction based on key press.
 	void ChangeDirection(int keyPress);

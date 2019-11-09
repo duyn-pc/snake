@@ -10,12 +10,12 @@
 int main()
 {
 	// Windows Console Setup
+	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+	DWORD charsWritten = 0;
 	HANDLE Console = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0,
 											   NULL, CONSOLE_TEXTMODE_BUFFER,
 											   NULL);
 	SetConsoleActiveScreenBuffer(Console);
-	DWORD charsWritten = 0;
-	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	if (!GetConsoleScreenBufferInfo(Console, &csbiInfo))
 	{
 		printf("GetConsoleScreenBufferInfo (%d)\n", GetLastError());
@@ -65,7 +65,7 @@ int main()
 								&charsWritten);
 
 	// Game Loop
-	while (snake.isAlive())
+	while (snake.is_alive())
 	{
 		// Input Stage
 		if (_kbhit()) keyPress = _getch();
@@ -87,7 +87,7 @@ int main()
 				break;
 		}
 		// Update Stage
-		switch (snake.giveDirection())
+		switch (snake.set_direction())
 		{
 		case 72:
 			Sleep(500); 
@@ -102,10 +102,10 @@ int main()
 		snake.MoveSnake(screenWidth);
 		snake.DetectCollision(screen);
 		snake.DrawSnake(screen);
-		if (!snake.foodActive()) snake.SpawnFood(screen, 
+		if (!snake.food_active()) snake.SpawnFood(screen, 
 											     screenWidth, 
 											     bottomBuffer);
-		wsprintf(&screen[1], L"S C O R E : %d", snake.giveScore()); 
+		wsprintf(&screen[1], L"S C O R E : %d", snake.set_score()); 
 		// Render Stage
 		WriteConsoleOutputCharacter(Console, screen,
 									screenSize, { 0,0 },

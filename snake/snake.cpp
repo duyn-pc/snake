@@ -14,19 +14,19 @@ Snake::Snake(bool newStatus, bool foodStatus,
 }
 
 // Planned to be used by screen to draw the snake
-bool Snake::isAlive()
+bool Snake::is_alive()
 {
 	return alive;
 }
-bool Snake::foodActive()
+bool Snake::food_active()
 {
 	return food;
 }
-bool Snake::giveDirection()
+bool Snake::set_direction()
 {
 	return direction;
 }
-int Snake::giveScore()
+int Snake::set_score()
 {
 	return score;
 }
