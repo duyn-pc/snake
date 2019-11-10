@@ -16,8 +16,7 @@ int main()
 											   NULL, CONSOLE_TEXTMODE_BUFFER,
 											   NULL);
 	SetConsoleActiveScreenBuffer(Console);
-	if (!GetConsoleScreenBufferInfo(Console, &csbiInfo))
-	{
+	if (!GetConsoleScreenBufferInfo(Console, &csbiInfo)) {
 		printf("GetConsoleScreenBufferInfo (%d)\n", GetLastError());
 		return 0;
 	}
@@ -33,15 +32,12 @@ int main()
 	// Drawing the borders. Make class of this later
 	for (int i = 0; i < screenSize; i++) screen[i] = L' ';
 	for (int i = screenWidth; i < topBuffer; i++) screen[i] = L'#';
-	for (int i = screenWidth; i < bottomBuffer; i++)
-	{
-		if ((i % screenWidth == 0) || (i % screenWidth == screenWidth - 1))
-		{
+	for (int i = screenWidth; i < bottomBuffer; i++) {
+		if ((i % screenWidth == 0) || (i % screenWidth == screenWidth - 1)) {
 			screen[i] = L'#';
 		}
 	}
-	for (int i = bottomBuffer; i < screenSize; i++)
-	{
+	for (int i = bottomBuffer; i < screenSize; i++) {
 		screen[i] = L'#';
 	}
 	wsprintf(&screen[topBuffer + 1], L"S N A K E");
@@ -56,8 +52,8 @@ int main()
 	// Initialize Snake  
 	srand(time(NULL));
 	Snake snake(true, false, RIGHT, 0, (screenSize / 2) + 4);
-	snake.DrawSnake(screen);
-	snake.SpawnFood(screen, screenWidth, bottomBuffer);
+	snake.draw(screen);
+	snake.spawn_food(screen, screenWidth, bottomBuffer);
 
 	// Output game screen to console
 	WriteConsoleOutputCharacter(Console, screen, 
@@ -65,30 +61,27 @@ int main()
 								&charsWritten);
 
 	// Game Loop
-	while (snake.is_alive())
-	{
+	while (snake.is_alive()) {
 		// Input Stage
 		if (_kbhit()) keyPress = _getch();
-		switch (keyPress)
-		{
+		switch (keyPress) {
 			case UP:
-				snake.ChangeDirection(UP);
+				snake.change_direction(UP);
 				break;
 			case RIGHT:
-				snake.ChangeDirection(RIGHT);
+				snake.change_direction(RIGHT);
 				break;
 			case DOWN:
-				snake.ChangeDirection(DOWN);
+				snake.change_direction(DOWN);
 				break;
 			case LEFT:
-				snake.ChangeDirection(LEFT);
+				snake.change_direction(LEFT);
 				break;
 			default:
 				break;
 		}
 		// Update Stage
-		switch (snake.set_direction())
-		{
+		switch (snake.set_direction()) {
 		case 72:
 			Sleep(500); 
 			break;
@@ -99,12 +92,12 @@ int main()
 			Sleep(100);
 			break;
 		}
-		snake.MoveSnake(screenWidth);
-		snake.DetectCollision(screen);
-		snake.DrawSnake(screen);
-		if (!snake.food_active()) snake.SpawnFood(screen, 
-											     screenWidth, 
-											     bottomBuffer);
+		snake.move(screenWidth);
+		snake.detect_collision(screen);
+		snake.draw(screen);
+		if (!snake.food_active()) snake.spawn_food(screen, 
+											       screenWidth, 
+											       bottomBuffer);
 		wsprintf(&screen[1], L"S C O R E : %d", snake.set_score()); 
 		// Render Stage
 		WriteConsoleOutputCharacter(Console, screen,

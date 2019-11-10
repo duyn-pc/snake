@@ -22,22 +22,22 @@ public:
 	int set_score();
 
 	//Change snake direction based on key press.
-	void ChangeDirection(int keyPress);
+	void change_direction(int keyPress);
 
 	/* Adds the coordinates of the next snake block to the start of the list */
-	void MoveSnake(int moveDistance);
+	void move(int moveDistance);
 
 	/* Ends game if snake encounters border or itself.
 	   If there are no obstacles, snake will chop its tail to move forward.
 	   If food is encountered, snake will not chop its tail.
 	*/
-	void DetectCollision(wchar_t* screen);
+	void detect_collision(wchar_t* screen);
 
 	/* Draws the head of the snake on the screen. */
-	void DrawSnake(wchar_t* screen);
+	void draw(wchar_t* screen);
 
 	/* Drops food on any free space on the screen. */
-	void SpawnFood(wchar_t* screen,
-				   const int screenWidth,
-				   const int bottomBuffer);
+	void spawn_food(wchar_t* screen,
+				    const int screenWidth,
+				    const int bottomBuffer);
 };

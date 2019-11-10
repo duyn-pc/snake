@@ -32,7 +32,7 @@ int Snake::set_score()
 }
 
 //Change snake direction based on key press.
-void Snake::ChangeDirection(int keyPress)
+void Snake::change_direction(int keyPress)
 {
 	switch (keyPress)
 	{
@@ -62,7 +62,7 @@ void Snake::ChangeDirection(int keyPress)
 }
 
 /* Adds the coordinates of the next snake block to the start of the list */
-void Snake::MoveSnake(int moveDistance)
+void Snake::move(int moveDistance)
 {
 	switch (direction)
 	{
@@ -87,7 +87,7 @@ void Snake::MoveSnake(int moveDistance)
 	If there are no obstacles, snake will chop its tail to move forward.
 	If food is encountered, snake will not chop its tail.
 */
-void Snake::DetectCollision(wchar_t* screen)
+void Snake::detect_collision(wchar_t* screen)
 {
 	wchar_t obstacle = screen[body.front()];
 	if ((obstacle == L'#') ||
@@ -105,13 +105,13 @@ void Snake::DetectCollision(wchar_t* screen)
 }
 
 /* Draws the head of the snake on the screen. */
-void Snake::DrawSnake(wchar_t* screen)
+void Snake::draw(wchar_t* screen)
 {
 	screen[body.front()] = L'8';
 }
 
 /* Drops food on any free space on the screen. */
-void Snake::SpawnFood(wchar_t* screen,
+void Snake::spawn_food(wchar_t* screen,
 	                  const int screenWidth,
 	                  const int bottomBuffer)
 {
