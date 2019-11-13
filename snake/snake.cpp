@@ -1,40 +1,18 @@
 // snake.cpp
 #include "snake.h"
 
-// Constructor
-Snake::Snake(bool newStatus, bool foodStatus,
-	         int newDirection, int newScore,
-	         int snakeCoord)
+Snake::Snake(int starting_coord)
 {
-	alive = newStatus;
-	food = foodStatus;
-	direction = newDirection;
-	score = newScore;
-	body.push_front(snakeCoord);
-}
-
-// Planned to be used by screen to draw the snake
-bool Snake::is_alive()
-{
-	return alive;
-}
-bool Snake::food_active()
-{
-	return food;
-}
-bool Snake::set_direction()
-{
-	return direction;
-}
-int Snake::set_score()
-{
-	return score;
+	alive = true;
+	direction = 77; //Right
+	body.push_front(starting_coord);
+	srand(time(NULL)); // Randomized seed for food spawn position
 }
 
 //Change snake direction based on key press.
-void Snake::change_direction(int keyPress)
+void Snake::change_direction(int key_press)
 {
-	switch (keyPress)
+	switch (key_press)
 	{
 	case 72: // Up
 		if ((direction == 72) ||
@@ -62,18 +40,18 @@ void Snake::change_direction(int keyPress)
 }
 
 /* Adds the coordinates of the next snake block to the start of the list */
-void Snake::move(int moveDistance)
+void Snake::move(int move_distance)
 {
 	switch (direction)
 	{
 	case 72: // Up
-		body.push_front(body.front() - moveDistance);
+		body.push_front(body.front() - move_distance);
 		break;
 	case 77: // Right
 		body.push_front(body.front() + 1);
 		break;
 	case 80: // Down
-		body.push_front(body.front() + moveDistance);
+		body.push_front(body.front() + move_distance);
 		break;
 	case 75: // Left
 		body.push_front(body.front() - 1);
@@ -87,42 +65,26 @@ void Snake::move(int moveDistance)
 	If there are no obstacles, snake will chop its tail to move forward.
 	If food is encountered, snake will not chop its tail.
 */
-void Snake::detect_collision(wchar_t* screen)
+void Snake::detect_collision(wchar_t* board, bool food, int score)
 {
-	wchar_t obstacle = screen[body.front()];
+	wchar_t obstacle = board[body.front()];
 	if ((obstacle == L'#') ||
 		(obstacle == L'8')) alive = false;
 	else if (obstacle == L' ')
 	{
-		screen[body.back()] = L' ';
+		board[body.back()] = L' ';
 		body.pop_back();
 	}
 	else
 	{
 		food = false;
-		score = score + 10;
+		score += 10;
 	}
 }
 
-/* Draws the head of the snake on the screen. */
-void Snake::draw(wchar_t* screen)
+/* Draws the head of the snake on the board. */
+void Snake::draw(wchar_t* board)
 {
-	screen[body.front()] = L'8';
+	board[body.front()] = L'8';
 }
 
-/* Drops food on any free space on the screen. */
-void Snake::spawn_food(wchar_t* screen,
-	                  const int screenWidth,
-	                  const int bottomBuffer)
-{
-	while (!food)
-	{
-		// Random location between top and bottom buffer
-		int foodCoord = (rand() % (bottomBuffer - screenWidth)) + screenWidth * 3;
-		if (screen[foodCoord] == L' ')
-		{
-			food = true;
-			screen[foodCoord] = L'O';
-		}
-	}
-}
